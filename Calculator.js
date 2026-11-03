@@ -3,6 +3,7 @@ let currentInput = "";
 let previousInput = "";
 let operation = null;
 let result = "";
+let histories = "";
 
 // Selected elements to work in js
 const display = document.querySelector("#display");
@@ -55,9 +56,32 @@ function appendDot() {
 dotButton.addEventListener("click", appendDot);
 
 // Configures the chosen mathematical operation symbol
+
+// Configures the chosen mathematical operation symbol
 function appendOperator(op) {
   if (currentInput === "") return;
   if (previousInput !== "") {
+    histories = currentInput + appendOperator() + previousInput;
+    updateDisplay();
+  }
+  operation = op;
+  previousInput = currentInput;
+  currentInput = "";
+}
+
+allOperator.forEach((element) => {
+  element.addEventListener("click", () => {
+    const opr = element.textContent;
+    appendOperator(opr);
+    updateDisplay();
+  });
+});
+
+/* 
+function appendOperator(op) {
+  if (currentInput === "") return;
+  if (previousInput !== "") {
+    currentInput = currentInput + previousInput + op;
     calculate(); // If a calculation is pending, compute it first
   }
   operation = op;
@@ -72,6 +96,7 @@ allOperator.forEach((element) => {
     updateDisplay();
   });
 });
+*/
 
 // Resets state variables to clear out display contents
 function clearDisplay() {
@@ -87,7 +112,7 @@ allClear.addEventListener("click", clearDisplay);
 
 // Refreshes the hardware display text component markup
 function updateDisplay() {
-  calcdisplay.value = currentInput || previousInput || "0";
+  calcdisplay.value = histories || currentInput || previousInput || "0";
 }
 
 function resultDisplay() {
